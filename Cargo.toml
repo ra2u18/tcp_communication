@@ -12,9 +12,14 @@ members = [
 [dependencies]
 tokio = { version = "1.19.2", features = ["full"] }
 tokio-util = { version = "0.6", features = ["codec"] }
-
 serde = { version = "1.0", features = ["derive"] }
 bincode = "1.0"
+hex = "0.4.3"
+hex-literal = "0.3.4"
+futures = "0.3.5"
+web3 = "0.18.0"
+reqwest = { version = "0.11", features = ["json"] } # reqwest with JSON parsing support
+serde_json = "1.0.82"
 
 [[bin]]
 name="client"
@@ -23,3 +28,11 @@ path="src/bin/tcp_client.rs"
 [[bin]]
 name="server"
 path="src/bin/tcp_server.rs"
+
+[[bin]]
+name="web3_ex"
+path="src/bin/web3_ex.rs"
+
+[[bin]]
+name="curl_http_req"
+path="src/bin/curl_http_req.rs"

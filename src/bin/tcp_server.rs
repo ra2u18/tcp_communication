@@ -4,10 +4,13 @@ use tokio::net::{TcpListener, TcpStream};
 use std::error::Error;
 use serde::{Serialize, Deserialize};
 
+use std::time::{SystemTime, UNIX_EPOCH, Duration};
+
 #[derive(Debug, Serialize, Deserialize)]
 struct A {
     id: i8,
-    key: i16
+    key: i16,
+    timestamp: u128
 }
 
 #[tokio::main]
@@ -46,6 +49,20 @@ async fn handle_client(stream: TcpStream) -> Result<(), Box<dyn Error>> {
     }
     
     let decoded: A = bincode::deserialize(&data).unwrap();
+
+    let start = SystemTime::now();
+    let since_the_epoch_ns = start
+        .duration_since(UNIX_EPOCH)
+        .expect("Time went backwards")
+        .as_nanos();
+
+    println!("{:?}", since_the_epoch_ns);
+
+    let time_elapsed = Duration::new(0, (since_the_epoch_ns - decoded.timestamp) as u32);
+
+    println!("{:?}ns", time_elapsed.as_secs_f64());
+
     println!("{:?}", decoded);
     Ok(())
 }
+
